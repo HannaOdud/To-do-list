@@ -6,7 +6,7 @@ function setup(){
     const retrivedData = localStorage.getItem("to_do_list");
     if (retrivedData != null){
         taskArray = JSON.parse(retrivedData);
-
+        ///display task cards
     }
 
     const form = document.getElementById("form");
