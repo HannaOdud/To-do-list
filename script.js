@@ -11,9 +11,10 @@ function setup(){
         const container = document.getElementById("container");
         container.innerHTML = "";
             ///we drow every card again
-        taskArray.forEach(task =>{
-            taskCard(task);
-        })
+        for (let i = 0; i < taskArray.length; i++){
+            const task = taskArray[i];
+            taskCard(task, i);
+        }
         /////
     }
 
@@ -41,19 +42,21 @@ function setup(){
         const container = document.getElementById("container");
         container.innerHTML = "";
             ///we drow every card again
-        taskArray.forEach(task =>{
-            taskCard(task);
-        })
+        for (let i = 0; i < taskArray.length; i++){
+            const task = taskArray[i];
+            taskCard(task, i);
+        }
         /////
         localStorage.setItem("to_do_list",  JSON.stringify(taskArray))
     })
 }
-function taskCard(task){
+function taskCard(task, i){
     //read task data
     const title = task.title;
     const description = task.description;
     const deadline = task.deadline;
     const important = task.important;
+    const done = task.done;
     //create dom elements
     const div = document.createElement("div");
     if (important == true){
@@ -73,13 +76,20 @@ function taskCard(task){
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.name = "name";
-    checkbox.value = "value";
+    if (done == true){checkbox.checked = true}
+    checkbox.id = i+"_checkbox";
     pDone.appendChild(checkbox);
     div.appendChild(pDone);
+    checkbox.addEventListener("change",() => {
+        const id = checkbox.id[0];
+        taskArray[id].done = checkbox.checked;
+        localStorage.setItem("to_do_list",  JSON.stringify(taskArray));
+    })
 
 
     const button = document.createElement("button");
     button.textContent = "Remove";
+    button.id = i;
     div.appendChild(h1);
     div.appendChild(pDesc);
     div.appendChild(pDate);
@@ -90,6 +100,9 @@ function taskCard(task){
 
     button.addEventListener("click",() =>{
         div.remove();
+        //we delete todo item from array
+        taskArray.splice(button.id,1);
+        localStorage.setItem("to_do_list",  JSON.stringify(taskArray));
     })
 
 }
